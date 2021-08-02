@@ -1,0 +1,4 @@
+*/15 * * * * /usr/local/bin/python3 /app/vco-ent-edge-config.py > /proc/1/fd/1 2>/proc/1/fd/2
+# Run the Python script every 15 minutes and
+# redirect stdout and stderr to the main process with
+# the PID of 1 to make them available through docker logs
