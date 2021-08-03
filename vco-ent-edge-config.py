@@ -216,7 +216,7 @@ class pccwg_vco():
         edge_configs = {}
         for edge in self.edge_id:
             edge_config = self.client.call_api(
-                            'edge/getEdgeConfigurationModules', {
+                            'edge/getEdgeConfigurationStack', {
                                 'enterpriseId': self.ent_id,
                                 'edgeId': edge
                             })
@@ -226,7 +226,7 @@ class pccwg_vco():
 
     def write_ent_edge_config(self, edge_configs):
         '''
-        Write each of the Edge config modules as JSON files in a
+        Write each of the Edge config stacks as JSON files in a
         directory named by the sanitised enterpriseName, and nested
         in a number of subdirectories named respectively by the year,
         the month and the day, and finally by the the full date and
@@ -302,7 +302,7 @@ class pccwg_vco():
 if __name__ == "__main__":
     '''
     Create the VCO client object, and read and write the Edge
-    config modules by calling the respective functions.
+    config stacks by calling the respective functions.
     '''
     conn = pccwg_vco()
     ent_edge_config = conn.get_ent_edge_config()
