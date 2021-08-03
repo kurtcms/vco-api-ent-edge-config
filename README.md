@@ -4,11 +4,13 @@ This Python app is containerised with [Docker Compose](https://docs.docker.com/c
 
 It does the following:
 
-1. Call the [VMware VeloCloud Orchestrator API](#appendix) to download a copy of the config module for all of the SD-WAN Edges in the enterprise network;
-2. Export the config modules as separate JSON files on a `Docker volume` that is accessible on the Docker host under `/var/lib/docker/volumes/<volume-name>/_data`, or in the same directory of the Python script if it is run as a standalone service, in a number of nested directories by the date and time of the API call; and
+1. Call the [VMware VeloCloud Orchestrator API](#appendix) to download a copy of the config stack for all of the SD-WAN Edges in the enterprise network;
+2. Export the config stacks as separate JSON files on a `Docker volume` that is accessible on the Docker host under `/var/lib/docker/volumes/<volume-name>/_data`, or in the same directory of the Python script if it is run as a standalone service, in a number of nested directories by the date and time of the API call; and
 3. Repeat the automated backup every 15 minutes on the hour and at :15, :30 and :45 past.
 
 ![alt text](https://kurtcms.org/git/vco-ent-edge-config/vco-ent-edge-config-screenshot.png)
+
+## Table of Content
 
 - [Getting Started](#getting-started)
   - [Git Clone](#git-clone)
@@ -20,7 +22,7 @@ It does the following:
   - [Standalone Python Script](#standalone-python-script)
     - [Dependencies](#dependencies)
     - [Cron](#cron)
-- [Config Module in JSON](#config-module-in-json)
+- [Config Stack in JSON](#config-stack-in-json)
 - [Appendix](#appendix)
 
 ## Getting Started
@@ -28,7 +30,7 @@ It does the following:
 Get started in three simple steps:
 
 1. [Download](#git-clone) a copy of the app;
-2. Create the [environment variable](#environment-variables) for the VeloCloud Orchestrator authentication and modify the [crontab](#crontab) if needed;
+2. Create the [environment variables](#environment-variables) for the VeloCloud Orchestrator authentication and modify the [crontab](#crontab) if needed;
 3. [Docker Compose](#docker-compose) or [build and run](#build-and-run) the image manually to start the app, or alternatively run the Python script as a standalone service.
 
 ### Git Clone
@@ -43,12 +45,12 @@ $ git clone https://github.com/kurtcms/vco-ent-edge-config /app/
 The app expects the hostname, username and password for the VeloCloud Orchestrator as environment variables in a `.env` file in the same directory. Be sure to create the `.env` file.
 
 ```shell
-nano /app/.env
+$ nano /app/.env
 ```
 
 And define the credentials accordingly.
 
-```shell
+```
 VCO_HOSTNAME = 'vco.managed-sdwan.com/'
 VCO_USERNAME = 'kurtcms@gmail.com'
 VCO_PASSWORD = '(redacted)'
@@ -56,7 +58,7 @@ VCO_PASSWORD = '(redacted)'
 
 ### Crontab
 
-By default the app is scheduled with [cron](https://crontab.guru/) to pull a copy of the config module for all of the SD-WAN Edges in the enterprise network every 15 minutes, with `stdout` and `stderr` redirected to the main process for `Docker logs`.  
+By default the app is scheduled with [cron](https://crontab.guru/) to pull a copy of the config stack for all the SD-WAN Edges in the enterprise network every 15 minutes, with `stdout` and `stderr` redirected to the main process for `Docker logs`.  
 
 Modify the `crontab` if a different schedule is required.
 
@@ -98,7 +100,7 @@ $ docker run -it --rm --name vco-ent-edge-config vco-ent-edge-config
 
 #### Dependencies
 
-Alternatively the `vco-ent-edge-config.py` script may be deployed as a standalone service. In which case be sure to install or the following required libraries:
+Alternatively the `vco-ent-edge-config.py` script may be deployed as a standalone service. In which case be sure to install the following required libraries:
 
 1. [Requests](https://github.com/psf/requests)
 2. [Python-dotenv](https://github.com/theskumar/python-dotenv)
@@ -107,7 +109,7 @@ Alternatively the `vco-ent-edge-config.py` script may be deployed as a standalon
 $ pip3 install requests python-dotenv
 ```
 
-[The VeloCloud Orchestrator JSON-RPC API Client](https://github.com/vmwarecode/VeloCloud-Orchestrator-JSON-RPC-API-Client---Python) library is also required. Download it with [wget](https://www.gnu.org/software/wget/).
+The [VeloCloud Orchestrator JSON-RPC API Client](https://github.com/vmwarecode/VeloCloud-Orchestrator-JSON-RPC-API-Client---Python) library is also required. Download it with [wget](https://www.gnu.org/software/wget/).
 
 ```shell
 $ wget -P /app/ https://raw.githubusercontent.com/vmwarecode/VeloCloud-Orchestrator-JSON-RPC-API-Client---Python/master/client.py
@@ -121,25 +123,25 @@ The script may then be executed with a task scheduler such as [cron](https://cro
 $ (crontab -l; echo "*/15 * * * * /usr/bin/python3 /app/vco-ent-edge-config.py") | crontab -
 ```
 
-## Config Module in JSON
+## Config Stack in JSON
 
-The config module for all of the Edges in the enterprise network will be downloaded and saved as separate JSON files on a `Docker volume` that is accessible on the Docker host under `/var/lib/docker/volumes/<volume-name>/_data`. If the Python script is run as a standalone service, the JSON files will be in the same directory of the script instead.
+The config stacks for all the Edges in the enterprise network will be downloaded and saved as separate JSON files on a `Docker volume` that is accessible on the Docker host under `/var/lib/docker/volumes/<volume-name>/_data`. If the Python script is run as a standalone service, the JSON files will be in the same directory of the script instead.
 
-In any case, the config JSON files are stored under a directory by the enterpriseName, and nested in a number of subdirectories named respectively by the year, the month and the day, and finally by the the full date and time of the API call to ease access.
+In any case, the JSON files are stored under a directory by the enterpriseName, and nested in a number of subdirectories named respectively by the year, the month and the day, and finally by the the full date and time of the API call to ease access.
 
 ```
 .
-└── enterpriseName
-    └── Year
-        └── Month
-            └── Date
-                └── YYYY-MM-DD-HH-MM-SS
+└── enterpriseName/
+    └── Year/
+        └── Month/
+            └── Date/
+                └── YYYY-MM-DD-HH-MM-SS/
                     ├── edgeName1.json
                     ├── edgeName2.json
                     ├── edgeName3.json
                     └── edgeName4.json
 ```
 
-## Appendix
+## Reference
 
 - [VMware SD-WAN Orchestrator API v1 Release 4.0.1](https://code.vmware.com/apis/1045/velocloud-sdwan-vco-api)
