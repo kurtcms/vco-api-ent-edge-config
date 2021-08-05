@@ -232,11 +232,11 @@ class pccwg_vco():
         the month and the day, and finally by the the full date and
         time now to ease access.
         .
-        └── enterpriseName
-            └── Year
-                └── Month
-                    └── Date
-                        └── YYYY-MM-DD-HH-MM-SS
+        └── enterpriseName/
+            └── Year/
+                └── Month/
+                    └── Date/
+                        └── YYYY-MM-DD-HH-MM-SS/
                             ├── edgeName1.json
                             ├── edgeName2.json
                             ├── edgeName3.json
@@ -248,45 +248,21 @@ class pccwg_vco():
         date_time = datetime.datetime.strptime(time_stamp,
                     '%Y-%m-%d-%H-%M-%S')
 
-        try:
-            mkdir(path[0] + '/' + ent_name_sanitised)
-        except FileExistsError:
-            pass
-        finally:
+        ent_edge_config_dir_list = [ent_name_sanitised,
+                                    date_time.year,
+                                    date_time.month,
+                                    date_time.day,
+                                    time_stamp]
+
+        ent_edge_config_dir = ''
+
+        for i in range(len(ent_edge_config_dir_list)):
+            ent_edge_config_dir += str(ent_edge_config_dir_list[i]) + '/'
+
             try:
-                mkdir(path[0] + '/' + ent_name_sanitised + '/' +
-                    str(date_time.year))
+                mkdir(path[0] + '/' + ent_edge_config_dir)
             except FileExistsError:
                 pass
-            finally:
-                try:
-                    mkdir(path[0] + '/' + ent_name_sanitised + '/' +
-                        str(date_time.year) + '/' + str(date_time.month))
-                except FileExistsError:
-                    pass
-                finally:
-                    try:
-                        mkdir(path[0] + '/' + ent_name_sanitised + '/' +
-                            str(date_time.year) + '/' +
-                            str(date_time.month) + '/' +
-                            str(date_time.day))
-                    except FileExistsError:
-                        pass
-                    finally:
-                        try:
-                            mkdir(path[0] + '/' + ent_name_sanitised +
-                                '/' + str(date_time.year) + '/' +
-                                str(date_time.month) + '/' +
-                                str(date_time.day) + '/' + time_stamp)
-                        except FileExistsError:
-                            pass
-                        finally:
-                            ent_edge_config_dir = (path[0] + '/' +
-                                ent_name_sanitised + '/' +
-                                str(date_time.year) + '/' +
-                                str(date_time.month) + '/' +
-                                str(date_time.day) + '/' +
-                                time_stamp + '/')
 
         for each in edge_configs:
             each_sanitised = self.__name_sanitised(each)
