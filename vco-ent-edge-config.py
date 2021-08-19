@@ -55,6 +55,11 @@ class pccwg_vco():
         self.client.authenticate(username, password, is_operator=False)
 
         '''
+        Read and initiate the time now
+        '''
+        self.time_now = self.__update_time()
+
+        '''
         Read and set the enterpriseName and enterpriseId from
         a call to the monitoring/getAggregateEdgeLinkMetrics
         '''
@@ -93,9 +98,8 @@ class pccwg_vco():
         '''
         if interval_sec is None:
             interval_sec = self.INTERVAL_SECS
-        time_now = self.__update_time()
-        self.time_end_e = time_now * 1000
-        self.time_start_e = (time_now - int(interval_sec)) * 1000
+        self.time_end_e = self.time_now * 1000
+        self.time_start_e = (self.time_now - int(interval_sec)) * 1000
 
     def _get_time(self, interval_sec = None):
         '''
@@ -105,11 +109,10 @@ class pccwg_vco():
         '''
         if interval_sec is None:
             interval_sec = self.INTERVAL_SECS
-        time_now = self.__update_time()
         self.time_end = datetime.datetime.utcfromtimestamp(
-                        time_now).isoformat()
+                        self.time_now).isoformat()
         self.time_start = datetime.datetime.utcfromtimestamp(
-                            time_now - int(interval_sec)).isoformat()
+                            self.time_now - int(interval_sec)).isoformat()
 
     def _get_aggre_metrics(self):
         '''
@@ -274,6 +277,33 @@ class pccwg_vco():
                 with open(ent_edge_config_dir + each_sanitised + '.json',
                 'w') as f:
                     f.write(json.dumps(edge_configs[each]))
+
+def write_ent_events(self, events):
+    '''
+    Write each of the event in a JSON file named 'events' in
+    a directory by the name of the sanitised enterpriseName.
+    Each event will be logged in a new line in the JSON file.
+    .
+    └── enterpriseName/
+        └── events.json
+    '''
+    if events:
+        ent_name_sanitised = self.__name_sanitised(self.ent_name)
+        ent_event_dir = path[0] + '/' + ent_name_sanitised + '/'
+        ent_event_file_name = 'events'
+
+        try:
+            mkdir(ent_event_dir)
+        except FileExistsError:
+            pass
+
+        event = ''
+        for each in events:
+            event += json.dumps(each) + '\n'
+
+        with open(ent_event_dir + ent_event_file_name + '.json',
+        'a') as f:
+            f.write(event)
 
 if __name__ == "__main__":
     '''
