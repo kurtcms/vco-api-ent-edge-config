@@ -13,6 +13,12 @@ class pccwg_vco():
     300 seconds i.e. 5 minutes interval as default for API calls
     '''
 
+    INTERVAL_SECS_METRICS = 3600
+    '''
+    3600 seconds i.e. 60 minutes interval as default for the
+    aggregate Edge transport metrics call
+    '''
+
     VCO_THRESHOLD = 600
     '''
     600 seconds i.e. 10 minutes for data is often not reflected in API
@@ -24,6 +30,12 @@ class pccwg_vco():
     '''
     Error message to display whem python-dotenv fails to read
     environment variables
+    '''
+
+    ERR_EMPTY_METRICS = 'monitoring/getAggregateEdgeLinkMetrics returns empty'
+    '''
+    Error message to display whem monitoring/getAggregateEdgeLinkMetrics
+    returns empty
     '''
 
     def __init__(self):
@@ -63,7 +75,7 @@ class pccwg_vco():
         Read and set the enterpriseName and enterpriseId from
         a call to the monitoring/getAggregateEdgeLinkMetrics
         '''
-        self.metrics = self._get_aggre_metrics()
+        self.metrics = self._get_aggre_metrics(self.INTERVAL_SECS_METRICS)
         self.ent_name = self._get_ent_name(self.metrics)
         self.ent_id = self._get_ent_id(self.metrics)
 
@@ -114,20 +126,28 @@ class pccwg_vco():
         self.time_start = datetime.datetime.utcfromtimestamp(
                             self.time_now - int(interval_sec)).isoformat()
 
-    def _get_aggre_metrics(self):
+    def _get_aggre_metrics(self, interval_sec):
         '''
         Poll and return the aggregate Edge transport metrics
         of all the Edges given a specified time interval
         '''
-        self._get_time_e()
-        metrics = self.client.call_api(
-                    'monitoring/getAggregateEdgeLinkMetrics', {
-                        'interval': {
-                            'start': self.time_start_e,
-                            'end': self.time_end_e
-                        }
-        })
-        return metrics
+        self._get_time_e(interval_sec)
+        try:
+            metrics = self.client.call_api(
+                        'monitoring/getAggregateEdgeLinkMetrics', {
+                            'interval': {
+                                'start': self.time_start_e,
+                                'end': self.time_end_e
+                            }
+            })
+            if metrics:
+                return metrics
+            else:
+                # Raise a system exit on an empty metrics
+                raise SystemExit(self.ERR_EMPTY_METRICS)
+        except Exception as e:
+            # Raise a system exit on exception
+            raise SystemExit(e)
 
     def _get_ent_id(self, metric):
         '''
