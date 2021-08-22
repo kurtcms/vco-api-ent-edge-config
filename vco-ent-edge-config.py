@@ -28,13 +28,13 @@ class pccwg_vco():
 
     ERR_INVALID_ENV = 'Problem locating the .env file'
     '''
-    Error message to display whem python-dotenv fails to read
+    Error message to display when python-dotenv fails to read
     environment variables
     '''
 
     ERR_EMPTY_METRICS = 'monitoring/getAggregateEdgeLinkMetrics returns empty'
     '''
-    Error message to display whem monitoring/getAggregateEdgeLinkMetrics
+    Error message to display when monitoring/getAggregateEdgeLinkMetrics
     returns empty
     '''
 
@@ -44,7 +44,7 @@ class pccwg_vco():
             Raise a system exit on error reading environment variables
             with python-dotenv
             '''
-            raise SystemExit(ERR_INVALID_ENV)
+            raise SystemExit(self.ERR_INVALID_ENV)
 
         try:
             '''
