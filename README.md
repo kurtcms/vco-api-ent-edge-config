@@ -76,7 +76,7 @@ With Docker Compose, the container may be provisioned with a single command. Be 
 $ docker-compose up
 ```
 
-Stopping the container is as simple as  a single command.
+Stopping the container is as simple as a single command.
 
 ```shell
 $ docker-compose down
