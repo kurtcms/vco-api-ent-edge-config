@@ -8,7 +8,7 @@ It does the following:
 2. Export the config stacks as separate JSON files on a `Docker volume` that is accessible on the Docker host under `/var/lib/docker/volumes/<volume-name>/_data`, or in the same directory of the Python script if it is run as a standalone service, in a number of nested directories by the date and time of the API call; and
 3. Repeat the process every 15 minutes on the hour and at :15, :30 and :45 past for an automated Edge config backup.
 
-![alt text](https://kurtcms.org/git/vco-ent-edge-config/vco-ent-edge-config-screenshot.png)
+<img src="https://kurtcms.org/git/vco-ent-edge-config/vco-ent-edge-config-screenshot.png" width="550">
 
 ## Table of Content
 
