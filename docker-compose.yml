@@ -2,3 +2,10 @@ version: "3.9"
 services:
   vco-ent-edge-config:
     build: .
+    # Cron in foreground as the entry point for the container
+    command: cron -f
+    # Create a Docker volume in /app on the Docker container
+    # to house the Python script outputs and mounts the volume
+    # in the current working directory on the Docker host
+    volumes:
+      - .:/app

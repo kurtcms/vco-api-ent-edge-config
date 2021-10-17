@@ -5,7 +5,7 @@ This Python app is containerised with [Docker Compose](https://docs.docker.com/c
 It does the following:
 
 1. Call the [VMware VeloCloud Orchestrator API](#reference) to download a copy of the config stack for all of the SD-WAN Edges in the enterprise network;
-2. Export the config stacks as separate JSON files on a `Docker volume` that is accessible on the Docker host under `/var/lib/docker/volumes/<volume-name>/_data`, or in the same directory of the Python script if it is run as a standalone service, in a number of nested directories by the date and time of the API call; and
+2. Export the config stacks as separate JSON files on a `Docker volume` that is mounted in the same directory of the `docker-compose.yml` file on the Docker host, or in the same directory of the Python script if it is run as a standalone service, in a number of nested directories by the date and time of the API call; and
 3. Repeat the process every 15 minutes on the hour and at :15, :30 and :45 past for an automated Edge config backup.
 
 <img src="https://kurtcms.org/git/vco-ent-edge-config/vco-ent-edge-config-screenshot.png" width="550">
@@ -125,7 +125,7 @@ $ (crontab -l; echo "*/15 * * * * /usr/bin/python3 /app/vco-ent-edge-config.py")
 
 ## Config Stack in JSON
 
-The config stacks for all the Edges in the enterprise network will be downloaded and saved as separate JSON files on a `Docker volume` that is accessible on the Docker host under `/var/lib/docker/volumes/<volume-name>/_data`. If the Python script is run as a standalone service, the JSON files will be in the same directory of the script instead.
+The config stacks for all the Edges in the enterprise network will be downloaded and saved as separate JSON files on a `Docker volume` that is mounted in the same directory of the `docker-compose.yml` file on the Docker host. If the Python script is run as a standalone service, the JSON files will be in the same directory of the script instead.
 
 In any case, the JSON files are stored under a directory by the enterpriseName, and nested in a number of subdirectories named respectively by the year, the month and the day, and finally by the the full date and time of the API call to ease access.
 
