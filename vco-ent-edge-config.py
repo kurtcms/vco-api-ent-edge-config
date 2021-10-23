@@ -293,32 +293,32 @@ class pccwg_vco():
             'w') as f:
                 f.write(json.dumps(edge_configs[each]))
 
-def write_ent_events(self, events):
-    '''
-    Write each of the event in a JSON file named 'events' in
-    a directory by the name of the sanitised enterpriseName.
-    Each event will be logged in a new line in the JSON file.
-    .
-    └── enterpriseName/
-        └── events.json
-    '''
-    if events:
-        ent_name_sanitised = self.__name_sanitised(self.ent_name)
-        ent_event_dir = path[0] + '/' + ent_name_sanitised + '/'
-        ent_event_file_name = 'events'
+    def write_ent_events(self, events):
+        '''
+        Write each of the event in a JSON file named 'events' in
+        a directory by the name of the sanitised enterpriseName.
+        Each event will be logged in a new line in the JSON file.
+        .
+        └── enterpriseName/
+            └── events.json
+        '''
+        if events:
+            ent_name_sanitised = self.__name_sanitised(self.ent_name)
+            ent_event_dir = path[0] + '/' + ent_name_sanitised + '/'
+            ent_event_file_name = 'events'
 
-        try:
-            mkdir(ent_event_dir)
-        except FileExistsError:
-            pass
+            try:
+                mkdir(ent_event_dir)
+            except FileExistsError:
+                pass
 
-        event = ''
-        for each in events:
-            event += json.dumps(each) + '\n'
+            event = ''
+            for each in events:
+                event += json.dumps(each) + '\n'
 
-        with open(ent_event_dir + ent_event_file_name + '.json',
-        'a') as f:
-            f.write(event)
+            with open(ent_event_dir + ent_event_file_name + '.json',
+            'a') as f:
+                f.write(event)
 
 if __name__ == '__main__':
     '''
