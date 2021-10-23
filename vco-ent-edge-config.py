@@ -277,26 +277,21 @@ class pccwg_vco():
                                     date_time.day,
                                     time_stamp]
 
-        ent_edge_config_dir = ''
+        ent_edge_config_dir = path[0] + '/'
 
         for i in range(len(ent_edge_config_dir_list)):
             ent_edge_config_dir += str(ent_edge_config_dir_list[i]) + '/'
 
             try:
-                mkdir(path[0] + '/' + ent_edge_config_dir)
+                mkdir(ent_edge_config_dir)
             except FileExistsError:
                 pass
 
         for each in edge_configs:
             each_sanitised = self.__name_sanitised(each)
-            try:
-                with open(ent_edge_config_dir + each_sanitised + '.json',
-                'x') as f:
-                    f.write(json.dumps(edge_configs[each]))
-            except FileExistsError:
-                with open(ent_edge_config_dir + each_sanitised + '.json',
-                'w') as f:
-                    f.write(json.dumps(edge_configs[each]))
+            with open(ent_edge_config_dir + each_sanitised + '.json',
+            'w') as f:
+                f.write(json.dumps(edge_configs[each]))
 
 def write_ent_events(self, events):
     '''
