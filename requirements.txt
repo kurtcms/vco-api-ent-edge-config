@@ -1,2 +1,4 @@
 requests
+numpy
+pandas
 python-dotenv

@@ -4,7 +4,7 @@ This Python app is containerised with [Docker Compose](https://docs.docker.com/c
 
 It does the following:
 
-1. Call the [VMware VeloCloud Orchestrator API](#reference) to download a copy of the config stack for all of the SD-WAN Edges in the enterprise network;
+1. Call the [VMware VeloCloud Orchestrator (VCO) API](#reference) to download a copy of the config stack for all of the SD-WAN Edges in the enterprise network;
 2. Export the config stacks as separate JSON files on a `Docker volume` that is mounted in the same directory of the `docker-compose.yml` file on the Docker host, or in the same directory of the Python script if it is run as a standalone service, in a number of nested directories by the date and time of the API call; and
 3. Repeat the process every 15 minutes on the hour and at :15, :30 and :45 past for an automated Edge config backup.
 
@@ -30,7 +30,7 @@ It does the following:
 Get started in three simple steps:
 
 1. [Download](#git-clone) a copy of the app;
-2. Create the [environment variables](#environment-variables) for the VeloCloud Orchestrator authentication and modify the [crontab](#crontab) if needed;
+2. Create the [environment variables](#environment-variables) for the VCO authentication and modify the [crontab](#crontab) if needed;
 3. [Docker Compose](#docker-compose) or [build and run](#build-and-run) the image manually to start the app, or alternatively run the Python script as a standalone service.
 
 ### Git Clone
@@ -42,7 +42,12 @@ $ git clone https://github.com/kurtcms/vco-ent-edge-config /app/
 
 ### Environment Variables
 
-The app expects the hostname, username and password for the VeloCloud Orchestrator as environment variables in a `.env` file in the same directory. Be sure to create the `.env` file.
+
+The app expects the hostname, the API token or the username and password for the VCO, as environment variables in a `.env` file in the same directory.
+
+Should both the API token, and the username and password, for the VCO be present, the app will always use the API token.
+
+Be sure to create the `.env` file.
 
 ```shell
 $ nano /app/.env
@@ -52,6 +57,11 @@ And define the credentials accordingly.
 
 ```
 VCO_HOSTNAME = 'vco.managed-sdwan.com/'
+
+# Either the API token
+VCO_TOKEN = '(redacted)'
+
+# Or the username and password
 VCO_USERNAME = 'kurtcms@gmail.com'
 VCO_PASSWORD = '(redacted)'
 ```
@@ -100,19 +110,15 @@ $ docker run -it --rm --name vco-ent-edge-config vco-ent-edge-config
 
 #### Dependencies
 
-Alternatively the `vco-ent-edge-config.py` script may be deployed as a standalone service. In which case be sure to install the following required libraries:
+Alternatively the `vco-ent-edge-config.py` script may be deployed as a standalone service. In which case be sure to install the following required libraries for the `vco_main.py`:
 
 1. [Requests](https://github.com/psf/requests)
 2. [Python-dotenv](https://github.com/theskumar/python-dotenv)
+3. [NumPy](https://github.com/numpy/numpy)
+4. [pandas](https://github.com/pandas-dev/pandas)
 
 ```shell
-$ pip3 install requests python-dotenv
-```
-
-The [VeloCloud Orchestrator JSON-RPC API Client](https://github.com/vmwarecode/VeloCloud-Orchestrator-JSON-RPC-API-Client---Python) library is also required. Download it with [wget](https://www.gnu.org/software/wget/).
-
-```shell
-$ wget -P /app/ https://raw.githubusercontent.com/vmwarecode/VeloCloud-Orchestrator-JSON-RPC-API-Client---Python/master/client.py
+$ pip3 install requests python-dotenv numpy pandas
 ```
 
 #### Cron

@@ -7,10 +7,10 @@ RUN apt-get update && apt-get -y install cron
 # Change working directory to /app
 WORKDIR /app
 
-COPY requirements.txt requirements.txt
-COPY client.py client.py
-COPY vco-ent-edge-config.py vco-ent-edge-config.py
-COPY .env .env
+COPY requirements.txt ./
+COPY vco_client.py vco_main.py ./
+COPY vco-ent-edge-config.py ./
+COPY .env ./
 COPY crontab /etc/cron.d/crontab
 
 RUN pip3 install -r requirements.txt
