@@ -8,8 +8,8 @@ RUN apt-get update && apt-get -y install cron
 WORKDIR /app
 
 COPY requirements.txt ./
-COPY vco_client.py vco_main.py ./
-COPY vco-ent-edge-config.py ./
+COPY vco_api_client.py vco_api_main.py ./
+COPY vco_api_ent_edge_config.py ./
 COPY .env ./
 COPY crontab /etc/cron.d/crontab
 

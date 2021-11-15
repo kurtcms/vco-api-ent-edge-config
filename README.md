@@ -1,4 +1,4 @@
-# VMware VeloCloud SD-WAN: Automated Edge Configuration Backup
+# VMware VeloCloud SD-WAN Orchestrator API: Automated Edge Configuration Backup
 
 This Python app is containerised with [Docker Compose](https://docs.docker.com/compose/) for rapid and modular deployment that fits in any microservice architecture.
 
@@ -8,7 +8,7 @@ It does the following:
 2. Export the config stacks as separate JSON files on a `Docker volume` that is mounted in the same directory of the `docker-compose.yml` file on the Docker host, or in the same directory of the Python script if it is run as a standalone service, in a number of nested directories by the date and time of the API call; and
 3. Repeat the process every 15 minutes on the hour and at :15, :30 and :45 past for an automated Edge config backup.
 
-<img src="https://kurtcms.org/git/vco-ent-edge-config/vco-ent-edge-config-screenshot.png" width="550">
+<img src="https://kurtcms.org/git/vco-api-ent-edge-config/vco-api-ent-edge-config-screenshot.png" width="550">
 
 ## Table of Content
 
@@ -37,7 +37,7 @@ Get started in three simple steps:
 
 Download a copy of the app with `git clone`
 ```shell
-$ git clone https://github.com/kurtcms/vco-ent-edge-config /app/
+$ git clone https://github.com/kurtcms/vco-api-ent-edge-config /app/
 ```
 
 ### Environment Variables
@@ -97,20 +97,20 @@ $ docker-compose down
 Otherwise the Docker image can also be built manually.
 
 ```shell
-$ docker build -t vco-ent-edge-config /app/
+$ docker build -t vco_api_ent_edge_config /app/
 ```
 
 Run the image with Docker once it is ready.  
 
 ```shell
-$ docker run -it --rm --name vco-ent-edge-config vco-ent-edge-config
+$ docker run -it --rm --name vco_api_ent_edge_config vco_api_ent_edge_config
 ```
 
 ### Standalone Python Script
 
 #### Dependencies
 
-Alternatively the `vco-ent-edge-config.py` script may be deployed as a standalone service. In which case be sure to install the following required libraries for the `vco_main.py`:
+Alternatively the `vco_api_ent_edge_config.py` script may be deployed as a standalone service. In which case be sure to install the following required libraries for the `vco_api_main.py`:
 
 1. [Requests](https://github.com/psf/requests)
 2. [Python-dotenv](https://github.com/theskumar/python-dotenv)
@@ -126,7 +126,7 @@ $ pip3 install requests python-dotenv numpy pandas
 The script may then be executed with a task scheduler such as [cron](https://crontab.guru/) that runs it once every 15 minutes for example.
 
 ```shell
-$ (crontab -l; echo "*/15 * * * * /usr/bin/python3 /app/vco-ent-edge-config.py") | crontab -
+$ (crontab -l; echo "*/15 * * * * /usr/bin/python3 /app/vco_api_ent_edge_config.py") | crontab -
 ```
 
 ## Config Stack in JSON
