@@ -4,13 +4,13 @@ import json
 import numpy as np
 import pandas as pd
 import smtplib, ssl
-from vco_client import vco_client
+from vco_api_client import vco_api_client
 from sys import path
 from os import mkdir, environ
 from dotenv import load_dotenv, find_dotenv
 from textwrap import dedent
 
-class vco_main():
+class vco_api_main():
     INTERVAL_SECS = 300
     '''
     300 seconds i.e. 5 minutes interval as default for API calls

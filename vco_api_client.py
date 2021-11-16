@@ -2,7 +2,7 @@ import requests
 import json
 import re
 
-class vco_client():
+class vco_api_client():
     def __init__(self, hostname, verify_ssl=True):
         '''
         Initiate the Session object, the HTTP headers,

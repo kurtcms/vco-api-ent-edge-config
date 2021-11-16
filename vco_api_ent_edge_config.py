@@ -1,6 +1,6 @@
-from vco_main import vco_main
+from vco_api_main import vco_api_main
 
-class pccwg_vco(vco_main):
+class pccwg_vco(vco_api_main):
     def __init__(self):
         super().__init__()
 
