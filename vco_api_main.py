@@ -67,7 +67,7 @@ class vco_api_main():
         authenticate it with the username and password if a token
         is not found
         '''
-        self.client = vco_client(hostname)
+        self.client = vco_api_client(hostname)
         if token:
             self.client.token_auth(token)
         else:
