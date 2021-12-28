@@ -127,7 +127,7 @@ $ pip3 install requests python-dotenv numpy pandas
 
 #### Cron
 
-The script may then be executed with a task scheduler such as [cron](https://crontab.guru/) that runs it once every 15 minutes for example.
+The script may then be executed with a task scheduler such as [cron](https://linux.die.net/man/8/cron) that runs it once every 15 minutes for example.
 
 ```shell
 $ (crontab -l; echo "*/15 * * * * /usr/bin/python3 /app/vco-api-ent-edge-config/vco_api_ent_edge_config.py") | crontab -
