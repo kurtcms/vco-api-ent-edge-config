@@ -1,6 +1,6 @@
 # VMware VeloCloud SD-WAN Orchestrator API: Automated Edge Configuration Backup
 
-This Python app is containerised with [Docker Compose](https://docs.docker.com/compose/) for rapid and modular deployment that fits in any microservice architecture.
+This Python app is containerised with [Docker Compose](https://docs.docker.com/compose/) for a modular and cloud native deployment that fits in any microservice architecture.
 
 It does the following:
 
@@ -50,7 +50,7 @@ Should both the API token, and the username and password, for the VCO be present
 Be sure to create the `.env` file.
 
 ```shell
-$ nano /app/.env
+$ nano /app/vco-api-ent-edge-config/.env
 ```
 
 And define the credentials accordingly.
@@ -68,22 +68,24 @@ VCO_PASSWORD = '(redacted)'
 
 ### Crontab
 
-By default the app is scheduled with [cron](https://crontab.guru/) to pull a copy of the config stack for all the SD-WAN Edges in the enterprise network every 15 minutes, with `stdout` and `stderr` redirected to the main process for `Docker logs`.  
+By default the app is scheduled with [cron](https://linux.die.net/man/8/cron) to pull a copy of the config stack for all the SD-WAN Edges in the enterprise network every 15 minutes, with `stdout` and `stderr` redirected to the main process for `Docker logs`.  
 
 Modify the `crontab` if a different schedule is required.
 
 ```shell
-$ nano /app/crontab
+$ nano /app/vco-api-ent-edge-config/crontab
 ```
 
 ### Docker Container
 
+Packaged as a container, the app is a standalone, executable package that may be run on Docker Engine. Be sure to have [Docker](https://docs.docker.com/engine/install/) installed.
+
 #### Docker Compose
 
-With Docker Compose, the container may be provisioned with a single command. Be sure to have Docker Compose [installed](https://docs.docker.com/compose/install/).
+With Docker Compose, the app may be provisioned with a single command. Be sure to have [Docker Compose](https://docs.docker.com/compose/install/) installed.
 
 ```shell
-$ docker-compose up
+$ docker-compose up -d
 ```
 
 Stopping the container is as simple as a single command.
@@ -97,7 +99,7 @@ $ docker-compose down
 Otherwise the Docker image can also be built manually.
 
 ```shell
-$ docker build -t vco_api_ent_edge_config /app/
+$ docker build -t vco_api_ent_edge_config /app/vco-api-ent-edge-config/
 ```
 
 Run the image with Docker once it is ready.  
@@ -108,9 +110,11 @@ $ docker run -it --rm --name vco_api_ent_edge_config vco_api_ent_edge_config
 
 ### Standalone Python Script
 
+Alternatively the `vco_api_ent_edge_config.py` script may be deployed as a standalone service.
+
 #### Dependencies
 
-Alternatively the `vco_api_ent_edge_config.py` script may be deployed as a standalone service. In which case be sure to install the following required libraries for the `vco_api_main.py`:
+In which case be sure to install the following required libraries for the `vco_api_main.py`:
 
 1. [Requests](https://github.com/psf/requests)
 2. [Python-dotenv](https://github.com/theskumar/python-dotenv)
@@ -126,14 +130,14 @@ $ pip3 install requests python-dotenv numpy pandas
 The script may then be executed with a task scheduler such as [cron](https://crontab.guru/) that runs it once every 15 minutes for example.
 
 ```shell
-$ (crontab -l; echo "*/15 * * * * /usr/bin/python3 /app/vco_api_ent_edge_config.py") | crontab -
+$ (crontab -l; echo "*/15 * * * * /usr/bin/python3 /app/vco-api-ent-edge-config/vco_api_ent_edge_config.py") | crontab -
 ```
 
 ## Config Stack in JSON
 
 The config stacks for all the Edges in the enterprise network will be downloaded and saved as separate JSON files on a `Docker volume` that is mounted in the same directory of the `docker-compose.yml` file on the Docker host. If the Python script is run as a standalone service, the JSON files will be in the same directory of the script instead.
 
-In any case, the JSON files are stored under a directory by the enterpriseName, and nested in a number of subdirectories named respectively by the year, the month and the day, and finally by the the full date and time of the API call to ease access.
+In any case, the JSON files are stored under a directory by the enterpriseName, and nested in a number of subdirectories named respectively by the year, the month and the day, and finally by the full date and time of the API call to ease access.
 
 ```
 .
