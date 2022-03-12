@@ -8,7 +8,7 @@ It does the following:
 2. Export the config stacks as separate JSON files on a `Docker volume` that is mounted in the same directory of the `docker-compose.yml` file on the Docker host, or in the same directory of the Python script if it is run as a standalone service, in a number of nested directories by the date and time of the API call; and
 3. Repeat the process every 15 minutes on the hour and at :15, :30 and :45 past for an automated Edge config backup.
 
-A detailed walk-though is available [here](https://kurtcms.org/vmware-velocloud-sd-wan-orchestrator-api-automated-edge-configuration-backup/).
+A detailed walk-through is available [here](https://kurtcms.org/vmware-velocloud-sd-wan-orchestrator-api-automated-edge-configuration-backup/).
 
 <img src="https://kurtcms.org/git/vco-api-ent-edge-config/vco-api-ent-edge-config-screenshot.png" width="550">
 
