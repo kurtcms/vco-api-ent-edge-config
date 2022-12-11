@@ -10,8 +10,6 @@ It does the following:
 
 A detailed walk-through is available [here](https://kurtcms.org/vmware-velocloud-sd-wan-orchestrator-api-automated-edge-configuration-backup/).
 
-<img src="https://github.com/kurtcms/vco-api-ent-edge-config/blob/master/screenshot.png" width="550">
-
 ## Table of Content
 
 - [Getting Started](#getting-started)
