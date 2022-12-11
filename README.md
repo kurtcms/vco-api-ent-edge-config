@@ -30,18 +30,18 @@ A detailed walk-through is available [here](https://kurtcms.org/vmware-velocloud
 Get started in three simple steps:
 
 1. [Download](#git-clone) a copy of the app;
-2. Create the [environment variables](#environment-variables) for the VCO authentication and modify the [crontab](#crontab) if needed;
+2. Create the [environment variables](#environment-variables) for the VCO authentication and modify the [crontab](#crontab) if needed; and
 3. [Docker Compose](#docker-compose) or [build and run](#build-and-run) the image manually to start the app, or alternatively run the Python script as a standalone service.
 
 ### Git Clone
 
 Download a copy of the app with `git clone`
+
 ```shell
-$ git clone https://github.com/kurtcms/vco-api-ent-edge-config /app/
+$ git clone https://github.com/kurtcms/vco-api-ent-edge-config /app/vco-api-ent-edge-config/
 ```
 
 ### Environment Variables
-
 
 The app expects the hostname, the API token or the username and password for the VCO, as environment variables in a `.env` file in the same directory.
 
@@ -62,13 +62,13 @@ VCO_HOSTNAME = 'vco.managed-sdwan.com/'
 VCO_TOKEN = '(redacted)'
 
 # Or the username and password
-VCO_USERNAME = 'kurtcms@gmail.com'
+VCO_USERNAME = 'kurtcms'
 VCO_PASSWORD = '(redacted)'
 ```
 
 ### Crontab
 
-By default the app is scheduled with [cron](https://linux.die.net/man/8/cron) to pull a copy of the config stack for all the SD-WAN Edges in the enterprise network every 15 minutes, with `stdout` and `stderr` redirected to the main process for `Docker logs`.  
+By default the app is scheduled with [cron](https://linux.die.net/man/8/cron) to pull a copy of the config stack for all the SD-WAN Edges in the enterprise network every 15 minutes, with `stdout` and `stderr` redirected to the main process for `Docker logs`.
 
 Modify the `crontab` if a different schedule is required.
 
@@ -84,7 +84,7 @@ Packaged as a container, the app is a standalone, executable package that may be
 
 With Docker Compose, the app may be provisioned with a single command.
 
-Install [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/) with the Bash script that comes with app.
+Install [Docker](https://docs.docker.com/engine/install/) and [Docker Compose](https://docs.docker.com/compose/install/) with the [Bash](https://github.com/gitGNU/gnu_bash) script that comes with app.
 
 ```shell
 $ chmod +x /app/vco-api-ent-edge-config/docker-compose/docker-compose.sh \
@@ -111,7 +111,7 @@ Otherwise the Docker image can also be built manually.
 $ docker build -t vco_api_ent_edge_config /app/vco-api-ent-edge-config/
 ```
 
-Run the image with Docker once it is ready.  
+Run the image with Docker once it is ready.
 
 ```shell
 $ docker run -it --rm --name vco_api_ent_edge_config vco_api_ent_edge_config
@@ -129,6 +129,8 @@ In which case be sure to install the following required libraries for the `vco_a
 2. [Python-dotenv](https://github.com/theskumar/python-dotenv)
 3. [NumPy](https://github.com/numpy/numpy)
 4. [pandas](https://github.com/pandas-dev/pandas)
+
+Install them with [`pip3`](https://github.com/pypa/pip):
 
 ```shell
 $ pip3 install requests python-dotenv numpy pandas
