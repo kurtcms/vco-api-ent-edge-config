@@ -148,7 +148,7 @@ $ (crontab -l; echo "*/15 * * * * /usr/bin/python3 /app/vco-api-ent-edge-config/
 
 The config stacks for all the Edges in the enterprise network will be downloaded and saved as separate JSON files on a `Docker volume` that is mounted in the same directory of the `docker-compose.yml` file on the Docker host. If the Python script is run as a standalone service, the JSON files will be in the same directory of the script instead.
 
-In any case, the JSON files are stored under a directory by the enterpriseName, and nested in a number of subdirectories named respectively by the year, the month and the day, and finally by the full date and time of the API call to ease access.
+In any case, the JSON files are stored under a directory by the `enterpriseName`, and nested in a number of subdirectories named respectively by the year, the month and the day, and finally by the full date and time of the API call to ease access.
 
 ```
 .
