@@ -94,13 +94,13 @@ $ chmod +x /app/vco-api-ent-edge-config/docker-compose/docker-compose.sh \
 Start the containers with Docker Compose.
 
 ```shell
-$ docker-compose up -d
+$ docker-compose -f /app/vco-api-ent-edge-config/docker-compose.yml up -d
 ```
 
 Stopping the container is as simple as a single command.
 
 ```shell
-$ docker-compose down
+$ docker-compose -f /app/vco-api-ent-edge-config/docker-compose.yml down
 ```
 
 #### Build and Run
